@@ -1,0 +1,40 @@
+PATH
+  remote: .
+  specs:
+    ruby_web_io (0.0.1)
+      faraday
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (9.1.0)
+    faraday (0.13.1)
+      multipart-post (>= 1.2, < 3)
+    multipart-post (2.0.0)
+    mustermann (1.0.1)
+    rack (2.0.3)
+    rack-protection (2.0.0)
+      rack
+    rack-test (0.7.0)
+      rack (>= 1.0, < 3)
+    redis (4.0.1)
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.0)
+      tilt (~> 2.0)
+    tilt (2.0.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  byebug!
+  faraday!
+  rack-test!
+  redis!
+  ruby_web_io!
+  sinatra!
+
+BUNDLED WITH
+   1.16.0

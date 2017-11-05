@@ -3,5 +3,12 @@ services:
   gem:
     build: .
     command: sh -c "tail -f /dev/null"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
     volumes:
       - .:/gem
+  redis:
+    image: redis:alpine
+    command: redis-server
+    ports:
+      - "6379"
