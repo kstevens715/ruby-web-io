@@ -46,6 +46,17 @@ describe RubyWebIO do
     io.gets('|').must_equal 'data'
   end
 
+  it 'can get a single byte' do
+    io = build_web_io
+
+    io.write('abc')
+    io.rewind
+
+    io.getbyte.must_equal 97
+    io.getbyte.must_equal 98
+    io.getbyte.must_equal 99
+  end
+
   it 'maintains a cursor at the end of input' do
     io = build_web_io
 

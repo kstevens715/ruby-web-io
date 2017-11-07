@@ -10,11 +10,14 @@ end
 get '/gets' do
   #TODO: Respond with Content-Range header
   content_type :json
-
-  start = Integer(request.fetch_header('HTTP_RANGE'))
   key = request.fetch_header('HTTP_KEY')
   sep = params['sep']
-  content = Db.redis.getrange(key, start, -1)
+
+  http_range = request.fetch_header('HTTP_RANGE')
+  begin_range, end_range = http_range.scan(/bytes=(\d+)-(\d*)/).flatten
+  end_range = -1 if end_range == ''
+
+  content = Db.redis.getrange(key, begin_range, end_range)
   sep_index = content.index(sep)
   content = sep_index ? content[0..sep_index] : content
   {
