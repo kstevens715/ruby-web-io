@@ -13,11 +13,13 @@ describe RubyWebIO do
 
   it 'can use puts/gets' do
     io = build_web_io
+    io = StringIO.new
 
     io.puts('abc')
-    io.puts('def')
 
-    assert_equal 'abcdef', io.gets
+    io.gets.must_be_nil
+    io.rewind
+    io.gets.must_equal "abc\n"
   end
 
   def build_web_io
