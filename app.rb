@@ -8,11 +8,15 @@ class Db
 end
 
 get '/gets' do
+  #TODO: Respond with Content-Range header
   content_type :json
 
   start = Integer(request.fetch_header('HTTP_RANGE'))
   key = request.fetch_header('HTTP_KEY')
+  sep = params['sep']
   content = Db.redis.getrange(key, start, -1)
+  sep_index = content.index(sep)
+  content = sep_index ? content[0..sep_index] : content
   {
     body: content.length == 0 ? nil : content
   }.to_json
