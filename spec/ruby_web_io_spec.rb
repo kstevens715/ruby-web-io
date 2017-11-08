@@ -7,8 +7,9 @@ describe RubyWebIO do
   it 'creates a unique key each time' do
     io = build_web_io
 
-    assert_match /\A\h{32}\Z/, io.key
-    refute_match io.key, RubyWebIO.new.key
+    io.key.must_match /\A\h{32}\Z/
+    io.key.wont_equal RubyWebIO.new.key
+    io.inspect.must_equal "<RubyWebIO: #{io.key}>"
   end
 
   it 'adds newlines when inputting w/ #puts' do

@@ -60,6 +60,10 @@ class RubyWebIO
     @cursor = 0
   end
 
+  def inspect
+    "<#{self.class}: #{key}>"
+  end
+
   private
 
   attr_reader :connection, :cursor
