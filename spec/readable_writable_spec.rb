@@ -7,6 +7,7 @@ describe ReadableWritable do
 
     instance.wont_be :closed_read?
     instance.wont_be :closed_write?
+    instance.wont_be :closed?
   end
 
   it 'can be closed for reads' do
@@ -16,6 +17,7 @@ describe ReadableWritable do
 
     instance.must_be :closed_read?
     instance.wont_be :closed_write?
+    instance.wont_be :closed?
   end
 
   it 'can be closed for writes' do
@@ -25,6 +27,7 @@ describe ReadableWritable do
 
     instance.wont_be :closed_read?
     instance.must_be :closed_write?
+    instance.wont_be :closed?
   end
 
   it 'can be closed for both' do
@@ -34,6 +37,7 @@ describe ReadableWritable do
 
     instance.must_be :closed_read?
     instance.must_be :closed_write?
+    instance.must_be :closed?
   end
 
   def build_readable_writable

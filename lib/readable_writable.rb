@@ -14,6 +14,10 @@ module ReadableWritable
     self.writable = false
   end
 
+  def closed?
+    closed_read? && closed_write?
+  end
+
   def closed_read?
     !readable
   end

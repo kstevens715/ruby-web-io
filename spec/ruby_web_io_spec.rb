@@ -76,6 +76,7 @@ describe RubyWebIO do
 
     io.must_be :closed_read?
     io.must_be :closed_write?
+    io.must_be :closed?
 
     error = -> do
       io.gets
@@ -95,6 +96,7 @@ describe RubyWebIO do
 
     io.must_be :closed_read?
     io.wont_be :closed_write?
+    io.wont_be :closed?
 
     error = -> do
       io.gets
@@ -111,6 +113,7 @@ describe RubyWebIO do
 
     io.wont_be :closed_read?
     io.must_be :closed_write?
+    io.wont_be :closed?
 
     error = -> do
       io.write('value')
