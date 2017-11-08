@@ -47,6 +47,24 @@ describe RubyWebIO do
     io.gets('|').must_equal 'data'
   end
 
+  it 'does not blow up when separator is nil' do
+    io = build_web_io
+
+    io.write('somedata')
+    io.rewind
+
+    io.gets(nil, 1024).must_equal 'somedata'
+  end
+
+  it 'can limit the bytes returned' do
+    io = build_web_io
+
+    io.write('abcdefjhijklmnopqrstuvwxyz')
+    io.rewind
+
+    io.gets("\n", 13).must_equal 'abcdefjhijklm'
+  end
+
   it 'can get a single byte' do
     io = build_web_io
 
@@ -71,7 +89,7 @@ describe RubyWebIO do
     io.getc.must_be_nil
   end
 
-  it 'maintains a cursor at the end of input' do
+  it 'maintains position at the end of input' do
     io = build_web_io
 
     io.write('abc')
@@ -79,6 +97,35 @@ describe RubyWebIO do
     io.gets.must_be_nil
     io.rewind
     io.gets.must_equal 'abc'
+  end
+
+  it 'exposes the position' do
+    io = build_web_io
+    io.pos.must_equal 0
+
+    io.puts('abc')
+    io.puts('def')
+
+    io.pos.must_equal 8
+    io.gets
+    io.pos.must_equal 8
+    io.rewind
+    io.pos.must_equal 0
+    io.gets
+    io.pos.must_equal 4
+    io.gets
+    io.pos.must_equal 8
+  end
+
+  it 'can set the position' do
+    io = build_web_io
+
+    io.puts('abc')
+    io.puts('def')
+
+    io.rewind
+    io.pos = 5
+    io.gets.must_equal "ef\n"
   end
 
   it 'can be closed' do

@@ -4,12 +4,13 @@ require 'readable_writable'
 class RubyWebIO
   include ReadableWritable
 
+  attr_accessor :pos
   attr_reader :fileno, :key
 
   def initialize(options = {})
     @connection = options[:connection]
-    @cursor = 0
     @key = SecureRandom.hex
+    self.pos = 0
   end
 
   def getbyte
@@ -18,11 +19,13 @@ class RubyWebIO
   end
 
   def getc
-    get("\n", @cursor)
+    get("\n", pos)
   end
 
-  def gets(sep = "\n")
-    get(sep, nil)
+  def gets(sep = "\n", limit = nil)
+    limit = limit ? (pos - 1) + limit : nil
+
+    get(sep, limit)
   end
 
   def puts(value)
@@ -32,7 +35,7 @@ class RubyWebIO
   def write(value)
     raise IOError, "not opened for writing" if closed_write?
 
-    @cursor = @cursor + value.length
+    self.pos = pos + value.length
     connection.put do |req|
       req.url('/puts')
       req.body = value
@@ -47,17 +50,17 @@ class RubyWebIO
 
     result = connection.get do |req|
       req.url('/gets', sep: sep)
-      req.headers['Range'] = "bytes=#{@cursor}-#{end_value}"
+      req.headers['Range'] = "bytes=#{pos}-#{end_value}"
       req.headers['Key'] = @key
     end
 
     value = JSON.parse(result.body)['body']
-    @cursor = @cursor + value.to_s.length
+    self.pos = pos + value.to_s.length
     value
   end
 
   def rewind
-    @cursor = 0
+    self.pos = 0
   end
 
   def inspect
@@ -66,5 +69,5 @@ class RubyWebIO
 
   private
 
-  attr_reader :connection, :cursor
+  attr_reader :connection
 end

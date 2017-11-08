@@ -18,7 +18,7 @@ get '/gets' do
   end_range = -1 if end_range == ''
 
   content = Db.redis.getrange(key, begin_range, end_range)
-  sep_index = content.index(sep)
+  sep_index = sep ? content.index(sep) : -1
   content = sep_index ? content[0..sep_index] : content
   {
     body: content.length == 0 ? nil : content
