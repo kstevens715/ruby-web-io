@@ -4,7 +4,7 @@ require 'readable_writable'
 class RubyWebIO
   include ReadableWritable
 
-  attr_reader :key
+  attr_reader :fileno, :key
 
   def initialize(options = {})
     @connection = options[:connection]
@@ -13,7 +13,12 @@ class RubyWebIO
   end
 
   def getbyte
-    get("\n", @cursor).ord
+    char = getc
+    char ? char.ord : nil
+  end
+
+  def getc
+    get("\n", @cursor)
   end
 
   def gets(sep = "\n")

@@ -55,6 +55,19 @@ describe RubyWebIO do
     io.getbyte.must_equal 97
     io.getbyte.must_equal 98
     io.getbyte.must_equal 99
+    io.getbyte.must_be_nil
+  end
+
+  it 'can get a single character' do
+    io = build_web_io
+
+    io.write('abc')
+    io.rewind
+
+    io.getc.must_equal 'a'
+    io.getc.must_equal 'b'
+    io.getc.must_equal 'c'
+    io.getc.must_be_nil
   end
 
   it 'maintains a cursor at the end of input' do
@@ -149,6 +162,8 @@ describe RubyWebIO do
 
     csv.read.must_equal [row1, row2]
   end
+
+  specify { build_web_io.fileno.must_be_nil }
 
   def build_web_io
     conn = Faraday.new do |b|
