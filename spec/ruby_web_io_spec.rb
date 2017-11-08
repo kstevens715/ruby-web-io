@@ -35,6 +35,19 @@ describe RubyWebIO do
     io.gets.must_be_nil
   end
 
+  it 'returns the number of bytes being written' do
+    build_web_io.write('abc').must_equal 3
+  end
+
+  it 'can chain shovel operators' do
+    io = build_web_io
+
+    (io << 'abc' << 'def').must_equal io
+    io.rewind
+
+    io.gets.must_equal 'abcdef'
+  end
+
   it 'can get input using a custom separator' do
     io = build_web_io
 
@@ -128,6 +141,16 @@ describe RubyWebIO do
     io.gets.must_equal "ef\n"
   end
 
+  it 'can be rewinded' do
+    io = build_web_io
+
+    io.puts('abc')
+    io.gets
+
+    io.rewind.must_equal 0
+    io.pos.must_equal 0
+  end
+
   it 'can be closed' do
     io = build_web_io
 
@@ -212,6 +235,9 @@ describe RubyWebIO do
   end
 
   specify { build_web_io.fileno.must_be_nil }
+  specify { build_web_io.wont_be :isatty }
+  specify { build_web_io.wont_be :tty? }
+  specify { build_web_io.must_be :sync }
 
   def build_web_io
     conn = Faraday.new do |b|

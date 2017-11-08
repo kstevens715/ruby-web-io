@@ -1,5 +1,5 @@
 require 'securerandom'
-require 'readable_writable'
+require_relative 'readable_writable'
 
 class RubyWebIO
   include ReadableWritable
@@ -35,15 +35,21 @@ class RubyWebIO
   def write(value)
     raise IOError, "not opened for writing" if closed_write?
 
-    self.pos = pos + value.length
     connection.put do |req|
       req.url('/puts')
       req.body = value
       req.headers['Key'] = @key
     end
+
+    bytes = value.length
+    self.pos = pos + bytes
+    bytes
   end
 
-  alias << write
+  def <<(value)
+    write(value)
+    self
+  end
 
   def get(sep, end_value)
     raise IOError, "not opened for reading" if closed_read?
@@ -66,6 +72,10 @@ class RubyWebIO
   def inspect
     "<#{self.class}: #{key}>"
   end
+
+  def isatty; false; end
+  def tty?; false; end
+  def sync; true; end
 
   private
 
