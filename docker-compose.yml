@@ -7,6 +7,8 @@ services:
       - REDIS_URL=redis://redis:6379/0
     volumes:
       - .:/gem
+    ports:
+      - "4567:4567" # Sinatra
   redis:
     image: redis:alpine
     command: redis-server

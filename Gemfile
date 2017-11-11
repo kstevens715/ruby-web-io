@@ -5,6 +5,8 @@ source 'https://rubygems.org' do
   group :test do
     gem 'rack-test'
     gem 'byebug'
+    gem 'capybara'
+    gem 'poltergeist'
   end
 
   gemspec

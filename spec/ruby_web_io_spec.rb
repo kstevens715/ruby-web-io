@@ -7,7 +7,7 @@ describe RubyWebIO do
   it 'creates a unique key each time' do
     io = build_web_io
 
-    io.key.must_match /\A\h{32}\Z/
+    io.key.must_match(/\A\h{32}\Z/)
     io.key.wont_equal RubyWebIO.new.key
     io.inspect.must_equal "<RubyWebIO: #{io.key}>"
   end
@@ -216,8 +216,8 @@ describe RubyWebIO do
     logger.fatal('FATAL!')
     io.rewind
 
-    io.gets.must_match /INFO -- : some info/
-    io.gets.must_match /FATAL -- : FATAL!/
+    io.gets.must_match(/INFO -- : some info/)
+    io.gets.must_match(/FATAL -- : FATAL!/)
   end
 
   it 'can be used by csv' do

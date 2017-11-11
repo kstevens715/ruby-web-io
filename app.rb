@@ -1,10 +1,17 @@
 require 'sinatra'
 require 'redis'
 
+# Listen on all interfaces in the development environment
+set :bind, '0.0.0.0'
+
 class Db
   def self.redis
     @redis ||= Redis.new
   end
+end
+
+get '/' do
+  File.read("#{__dir__}/lib/views/index.html")
 end
 
 get '/gets' do
