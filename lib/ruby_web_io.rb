@@ -1,3 +1,5 @@
+require 'faraday'
+require 'json'
 require 'securerandom'
 require_relative 'readable_writable'
 
@@ -8,8 +10,11 @@ class RubyWebIO
   attr_reader :fileno, :key
 
   def initialize(options = {})
-    @connection = options[:connection]
     @key = SecureRandom.hex
+    @connection = options.fetch(:connection) do
+      #TODO: Get this from an environment variable
+      Faraday.new(url: 'http://localhost:4567')
+    end
     self.pos = 0
   end
 
